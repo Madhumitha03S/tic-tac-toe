@@ -1,0 +1,148 @@
+import java.util.Scanner;
+
+public class TicTacToe {
+
+    static Scanner scan = new Scanner(System.in);
+    public static void main (String[] args) {
+        
+            System.out.println("\nLet's play tic-tac-toe! :))");
+
+            // Creating an array with three rows for the tic-tac-toe game board
+            // Adding '_' characters to represent empty spots
+            char[][] gameBoard = {
+                    {'_', '_', '_'},
+                    {'_', '_', '_'},
+                    {'_', '_', '_'}
+            };
+
+            // Calling the function to display the initial game board
+            printBoard(gameBoard);
+              
+        for (int i = 0; i < 9; i++) {
+            
+            // Calling the function to take player's choice
+            int[] spot = askPlayer(gameBoard);
+            
+            // Looping through turns of 'X' and 'Y' players
+            if (i % 2 == 0) {
+                System.out.println("Turn: X");
+                gameBoard[spot[0]][spot[1]] = 'X';
+            } else {
+                System.out.println("Turn: O");
+                gameBoard[spot[0]][spot[1]] = 'O';
+            }
+            
+            // Displaying the game board after each player's turn
+            printBoard(gameBoard);
+            
+            // Calling the function to check for wins
+            int count = checkWin(gameBoard);
+            if (count == 3) {
+                System.out.println("X WINS!!");
+                break;
+            } else if (count == -3) {
+                System.out.println("O WINS!!");
+                break;
+            } else if (i == 8) {
+                System.out.println("It's a tie!");
+            }
+        }
+
+        scan.close();
+    }
+
+    /** Function that prints the board
+     * 
+     * Function name - printBoard
+     * @param board (char[][])
+     *      
+     */
+    public static void printBoard(char[][] board) {
+        System.out.println("\n");
+        for (int i = 0; i < board.length; i++) {
+            System.out.print("\t");
+            for (int j = 0; j < board[i].length; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.print("\n\n");
+        }
+    }
+
+   /** Function that lets the player choose a spot
+     * 
+     * Function name – askPlayer
+     * @param board (char[][] board)
+     * @return spot (int[])
+     *      
+     */
+   public static int[] askPlayer (char[][] board) {
+       System.out.println(" > Pick a row and column number: (0 to 2)");
+       int row = scan.nextInt();
+       int column = scan.nextInt();
+       while (board[row][column] != '_') {
+           System.out.println("Spot taken, try again: ");
+           row = scan.nextInt();
+           column = scan.nextInt();
+       }
+       return new int[] {row, column};
+   }
+
+    /** Function that determines the winner
+     * 
+     * Function name - checkWin 
+     * @param board (char[][])
+     * @return count (int)
+     * 
+     */
+    public static int checkWin (char[][] board) {
+        int count = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 'X') {
+                    count++;
+                } else if (board[i][j] == 'O') {
+                    count--;
+                }
+            }
+            if (count == 3 || count == -3) {
+                return count;
+            } else {
+                count = 0;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (board[j][i] == 'X') {
+                    count++;
+                } else if (board[j][i] == 'O') {
+                    count--;
+                }
+            }
+            if (count == 3 || count == -3) {
+                return count;
+            } else {
+                count = 0;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            if (board[i][i] == 'X') {
+                count++;
+            } else if (board[i][i] == 'O') {
+                count--;
+            }
+        } if (count == 3 || count == -3) {
+            return count;
+        } else {
+            count = 0;
+        }
+        for (int i = 0; i < 3; i++) {
+            int j = 2 - i;
+            if (board[j][i] == 'X') {
+                count++;
+            } else if (board[j][i] == 'O') {
+                count--;
+            }
+        }
+        return count;
+    }
+}
